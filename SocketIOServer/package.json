@@ -1,0 +1,15 @@
+{
+    "name": "socket-ioserver",
+    "version": "0.0.0",
+    "description": "SocketIOServer",
+    "main": "app.js",
+    "author": {
+        "name": ""
+    },
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "socket.io": "4.2.0"
+    }
+}
