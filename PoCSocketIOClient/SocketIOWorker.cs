@@ -16,28 +16,21 @@ namespace PoCSocketIOClient
         {
             _logger = logger;
 
-            string url = "http://server:port";
+            string url = "http://localhost:11004";
             _socketIO = new SocketIO(url);
-
-            _socketIO.On("ping", async res =>
-            {
-                string message = "a personal message";
-                await _socketIO.EmitAsync("pong", message);
-            });
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await _socketIO.ConnectAsync();
             while (!stoppingToken.IsCancellationRequested)
             {
-                try
+                await _socketIO.EmitAsync("echo", res =>
                 {
-                    await _socketIO.ConnectAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
+                    long ts = res.GetValue<long>();
+                    _logger.LogInformation(ts.ToString());
+                });
+                await Task.Delay(5000);
             }
         }
     }
